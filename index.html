@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eco Food Stats</title>
+  <meta name="description" content="Search, filter and sort every food in Eco Global Survival by calories, carbs, fat, protein, vitamins and more.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%235a8f3c'/%3E%3Cpath d='M16 7c-5 4-6 9-4 15 5-1 9-6 4-15z' fill='%23f3efe2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div>
+        <h1>Eco Food Stats</h1>
+        <p class="subtitle">Every food in <em>Eco Global Survival</em> — calories, nutrients, recipes and where they're used.</p>
+      </div>
+      <p class="meta" id="meta">Loading data…</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="controls" aria-label="Filters">
+      <div class="row">
+        <label class="field grow">
+          <span>Search</span>
+          <input type="search" id="q" placeholder="Name, description or tag…" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>Category</span>
+          <select id="category"><option value="">All categories</option></select>
+        </label>
+        <label class="field">
+          <span>Crafting table</span>
+          <select id="table"><option value="">Any table</option></select>
+        </label>
+        <label class="field">
+          <span>Skill</span>
+          <select id="skill"><option value="">Any skill</option></select>
+        </label>
+        <label class="field narrow">
+          <span>Max skill lvl</span>
+          <input type="number" id="maxLevel" min="0" max="7" placeholder="Any">
+        </label>
+      </div>
+
+      <div class="row">
+        <div class="chips" role="group" aria-label="Source">
+          <button type="button" class="chip" data-source="" aria-pressed="true">All</button>
+          <button type="button" class="chip" data-source="craftable" aria-pressed="false">Craftable</button>
+          <button type="button" class="chip" data-source="raw" aria-pressed="false">Raw / gathered</button>
+        </div>
+        <label class="field">
+          <span>Richest in</span>
+          <select id="dominant">
+            <option value="">Any nutrient</option>
+            <option value="carbs">Carbs</option>
+            <option value="fat">Fat</option>
+            <option value="protein">Protein</option>
+            <option value="vitamins">Vitamins</option>
+          </select>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="edible">
+          <span>Hide ingredients with &lt;50 cal</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="unobtainable">
+          <span>Show unused/dev items</span>
+        </label>
+        <button type="button" class="link-btn" id="toggleRanges" aria-expanded="false" aria-controls="ranges">Stat ranges ▾</button>
+        <button type="button" class="link-btn" id="reset">Reset</button>
+      </div>
+
+      <div class="ranges" id="ranges" hidden></div>
+    </section>
+
+    <div class="result-bar">
+      <p id="count" aria-live="polite"></p>
+      <div class="legend" aria-hidden="true">
+        <span><i class="sw carbs"></i>Carbs</span>
+        <span><i class="sw fat"></i>Fat</span>
+        <span><i class="sw protein"></i>Protein</span>
+        <span><i class="sw vitamins"></i>Vitamins</span>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table id="foods">
+        <thead><tr id="head"></tr></thead>
+        <tbody id="body"></tbody>
+      </table>
+    </div>
+
+    <section class="notes">
+      <h2>How to read this</h2>
+      <p><strong>Nutrients</strong> is carbs + fat + protein + vitamins. <strong>Density</strong> is nutrients per 1,000 calories — high-density foods fill your nutrient bars without filling your stomach. <strong>Balance</strong> is the weakest nutrient divided by the strongest (100 = perfectly even).</p>
+      <p>Skill-point gain in Eco comes from your whole stomach, not from one food: the average nutrient level, how balanced the four nutrients are, variety, tastiness and cravings all play in. Use density and balance to pick foods that complement each other. Tastiness is randomized per player, so it isn't listed.</p>
+      <p>Labor, craft time and ingredient amounts are base values before skill talents, upgrade modules and table bonuses.</p>
+    </section>
+  </main>
+
+  <dialog id="detail" aria-labelledby="d-name">
+    <form method="dialog"><button class="close" aria-label="Close">×</button></form>
+    <div id="detail-body"></div>
+  </dialog>
+
+  <footer class="wrap footer">
+    <p>Data extracted from the game's server files with <code>tools/extract_foods.py</code>. Eco is © Strange Loop Games; this is an unofficial fan site.</p>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
